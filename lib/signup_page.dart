@@ -31,18 +31,6 @@ class _SignupPage extends State<SignupPage> {
     });
   }
 
-  void checkValues(){
-    String fullName = fullNameController.text.trim();
-    String phoneNumber = phoneNumberController.text.trim();
-    String email =emailController.text.trim();
-
-    if(fullName =='' || imageFile==null || phoneNumber =='' || email == '' ){
-      UIHelper.showAlertDialod(context, 'Incomplete Data','please fill all the fields and upload the profile picture');
-
-    }else{
-      uploadData();
-    }
-  }
   void uploadData() async{
     String? fullName = fullNameController.text.trim();
     String? phoneNumber = phoneNumberController.text.trim();
@@ -55,10 +43,11 @@ class _SignupPage extends State<SignupPage> {
       "email": email,
     };
 
-    addData(blogData).then((value){
+    FirebaseFirestore.instance.collection('users').doc(uid).set(blogData).then((value){
       log('Data Uploaded!');
       Get.off(const SignupPage());
       Get.to(const HomePage());
+
     });
 
   }
